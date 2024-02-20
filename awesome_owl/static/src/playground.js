@@ -1,18 +1,44 @@
-import { Component, markup, useState } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
 import { Counter } from "./counter/counter";
 import { Card } from "./card/card";
+
+class CounterModel {
+    constructor(value) {
+        this.value = value;
+    }
+
+    increment() {
+        this.value++;
+    }
+
+    decrement() {
+        this.value--;
+    }
+}
 
 export class Playground extends Component {
     static template = "awesome_owl.playground";
     static components = { Counter, Card };
 
     setup() {
-        this.str1 = "<div class='text-primary'>some content</div>";
-        this.str2 = markup("<div class='text-primary'>some content</div>");
-        this.sum = useState({ value: 2 });
+        this.counters = useState([
+            new CounterModel(1),
+            new CounterModel(2),
+            new CounterModel(3),
+            new CounterModel(4),
+            new CounterModel(5),
+        ]);
     }
 
-    incrementSum() {
-        this.sum.value++;
+    sum() {
+        let sum = 0;
+        for (let counter of this.counters) {
+            sum += counter.value
+        }
+        return sum;
+    }
+
+    incrementCounter(counter) {
+        counter.value++;
     }
 }
